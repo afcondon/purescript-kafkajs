@@ -44,7 +44,7 @@ main =
   fromAff
     $ do
         let
-          kafka = makeClient { clientId: "transactional-producer", brokers: [ "localhost:9092" ], ssl: false, sasl: Nothing }
+          kafka = makeClient { clientId: "transactional-producer", brokers: [ "localhost:9092" ], ssl: false, sasl: Nothing, logLevel: Nothing }
 
           producerConfig = { idempotent: Just true, transactionalId: Just "tx-0", maxInFlightRequests: Nothing }
 

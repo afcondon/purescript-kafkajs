@@ -4,7 +4,7 @@ import Prelude (Unit, (>>>), (#), (<#>), bind, ($), (<>), pure, unit, (*>), disc
 import Control.Promise (Promise, toAffE, fromAff)
 import Effect (Effect)
 import Effect.Console (log)
-import Kafka.Consumer (connect, disconnect, Consumer, makeConsumer, ConsumerConfig, subscribe, EachBatch, eachBatch, ResolveOffset, ConsumerMessage)
+import Kafka.Consumer (connect, disconnect, Consumer, makeConsumer, ConsumerConfig, subscribe, EachBatch, eachBatch, ResolveOffset, ConsumerMessage, GroupId(..))
 import Kafka.Kafka
 import Kafka.Transaction (transaction, send, commit, abort)
 import Data.Maybe (Maybe(..))
@@ -30,9 +30,9 @@ main =
   fromAff
     $ do
         let
-          kafka = makeClient { clientId: "transactional-consumer", brokers: [ "localhost:9092" ], ssl: false, sasl: Nothing }
+          kafka = makeClient { clientId: "transactional-consumer", brokers: [ "localhost:9092" ], ssl: false, sasl: Nothing, logLevel: Nothing }
 
-          consumerConfig = { groupId: "transactional-group", readUncommitted: false, autoCommit: false }
+          consumerConfig = { groupId: GroupId "transactional-group", readUncommitted: false, autoCommit: false }
 
           consumer = makeConsumer kafka consumerConfig
         connect consumer
